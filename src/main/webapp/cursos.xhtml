@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Cursos</title>
+    </h:head>
+    <body>
+
+        <p:outputLabel value="Cursos" />
+
+        <br />
+        <br />
+
+        <h:form>
+            <p:breadCrumb>
+                <p:menuitem />
+                <p:menuitem value="Pessoas" action="index.jsf" />
+                <p:menuitem value="Cursos" action="cursos.jsf" />
+                <p:menuitem value="Cursos da Pessoa" action="matriculas.jsf" />
+            </p:breadCrumb>
+        </h:form>
+
+        <br />
+
+        <h:form id="form">
+
+            <p:panelGrid id="grid" columns="2">
+
+                <p:autoUpdate />
+                <p:messages showSummary="true" showDetail="false" closable="true"/>
+
+                <p:inputText id="idcurso" value="#{cursoBean.curso.id}" type="hidden" />
+
+                <p:outputLabel value="Descrição" for="descricao" />
+                <p:inputText id="descricao" value="#{cursoBean.curso.descricao}" size="50" required="true" requiredMessage="Necessário informar descrição!" />
+
+                <p:outputLabel value="Carga horária" for="horas" />
+                <p:inputText id="horas" value="#{cursoBean.curso.duracao}" size="10" required="true" requiredMessage="Necessário informar carga horária!">
+                    <p:keyFilter regEx="/[\d\-]/"/>
+                </p:inputText>
+
+                <p:commandButton value="Salvar" action="#{cursoBean.save()}" update="form2 form2:table" process="@all"/>
+                <p:commandButton immediate="true" value="Novo" action="#{cursoBean.novo()}" update="form" process="@this" />
+
+            </p:panelGrid>
+
+        </h:form>
+
+        <br />
+        <br />
+
+        <h:form id="form2">
+
+            <p:autoUpdate />
+
+            <p:dataTable id="table" var="c" value="#{cursoBean.list}">
+                <f:facet name="header">Cursos</f:facet>
+
+                <p:column>
+                    <f:facet name="header">Descrição</f:facet>
+                        #{c.descricao}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Carga Horária</f:facet>
+                        #{c.duracao}
+                </p:column>
+
+                <p:column style="text-align: center;">
+                    
+                    <f:facet name="header">Editar / Excluir</f:facet>
+                    
+                    <p:commandButton immediate="true" value="Editar" update="form">
+                        <f:setPropertyActionListener value="#{c}" target="#{cursoBean.curso}" />
+                    </p:commandButton>
+                    
+                    <p:commandButton immediate="true" value="Excluir" action="#{cursoBean.delete()}" update="form:grid form2:table" process="@this">
+                        <f:setPropertyActionListener value="#{c}" target="#{cursoBean.curso}" />
+                    </p:commandButton>
+                    
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+
+    </body>
+</html>

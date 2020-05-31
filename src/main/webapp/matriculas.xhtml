@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Matrículas</title>
+    </h:head>
+    <body>
+
+        <h:form>
+            <p:breadCrumb>
+                <p:menuitem />
+                <p:menuitem value="Pessoas" action="index.jsf" />
+                <p:menuitem value="Cursos" action="cursos.jsf" />
+                <p:menuitem value="Cursos da Pessoa" action="matriculas.jsf" />
+            </p:breadCrumb>
+        </h:form>
+
+        <br />
+
+        <h:form id="form">
+
+            <p:autoUpdate />
+            <p:messages showSummary="true" showDetail="false" closable="true"/>
+
+            <h2>Pessoa:</h2>
+            <br />
+
+            <p:outputLabel for="id" value="Código" />
+            <br />
+            <p:inputText id="id" value="#{cursosPessoasBean.pessoa.id}" readonly="true" size="10" />
+            <br />
+            <p:outputLabel for="nome" value="Nome" />
+            <br />
+            <p:inputText id="nome" value="#{cursosPessoasBean.pessoa.nome}" readonly="true" size="50"/>
+            <p:commandButton value="Buscar Pessoa" onclick="PF('buscaPessoa').show()"/>
+            <br />
+            <hr />
+
+            <br />
+            <h2>Matrículas:</h2>
+            <br />
+            <p:commandButton value="Adicionar curso" onclick="PF('buscarCurso').show()" />
+
+            <p:dataTable id="cursos" var="c" value="#{cursosPessoasBean.pessoa.cursos}" 
+                         paginator="true" rows="15">
+
+                <f:facet name="header">Cursos</f:facet>
+
+                <p:column headerText="Descrição">
+                    #{c.descricao}
+                </p:column>
+
+                <p:column headerText="Carga horária">
+                    #{c.duracao}
+                </p:column>
+
+                <p:column headerText="Excluir">
+                    <p:commandButton immediate="true" value="Excluir" action="#{cursosPessoasBean.removerCurso()}" update=":form:cursos">
+                        <f:setPropertyActionListener value="#{c}" target="#{cursosPessoasBean.curso}" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+        <p:dialog header="Buscar Pessoa" widgetVar="buscaPessoa" minHeight="400" modal="true">
+
+            <h:form id="modalForm">
+                <p:autoUpdate />
+
+                <p:outputLabel for="pesquisa" value="Pesquisa" />
+                <br />
+                <p:inputText id="pesquisa" value="#{buscaPessoaBean.pesquisa}" size="50" />
+                <p:commandButton value="Pesquisar" action="#{buscaPessoaBean.pesquisar()}" update=":modalForm :modalForm:table" />
+
+                <br />
+
+                <p:dataTable id="table" var="p" value="#{buscaPessoaBean.pessoas}" paginator="true" rows="10" rowKey="#{p.id}">
+                    <f:facet name="header">Pessoas</f:facet>
+
+                    <p:column>
+                        <f:facet name="header">Nome</f:facet>
+                            #{p.nome}
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Selecionar</f:facet>
+                        <p:commandButton value="Selecionar" oncomplete="PF('buscaPessoa').hide()" update="form" process="@this">
+                            <f:setPropertyActionListener value="#{p}" target="#{cursosPessoasBean.pessoa}" />
+                        </p:commandButton>
+                    </p:column>				
+                </p:dataTable>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog header="Buscar Curso" widgetVar="buscarCurso" minHeight="400" modal="true">
+
+            <h:form id="modalCursos">
+
+                <p:autoUpdate />
+
+                <p:outputLabel for="pesquisaCurso" value="Pesquisa"/>
+                <br />
+                <p:inputText id="pesquisaCurso" value="#{buscaCursoBean.pesquisa}" size="50"/>
+                <p:commandButton immediate="true" value="Pesquisar" action="#{buscaCursoBean.pesquisar()}" update=":modalCursos:modalTable" />
+                <br />
+
+                <p:dataTable id="modalTable" var="c" value="#{buscaCursoBean.cursos}" rowKey="#{c.id}" paginator="true" rows="10" resizableColumns="true">
+
+                    <f:facet name="header">Cursos</f:facet>
+
+                    <p:column headerText="Descrição">
+                        #{c.descricao}
+                    </p:column>
+                    
+                    <p:column headerText="Duração">
+                        #{c.duracao}
+                    </p:column>
+                    
+                    <p:column headerText="Selecionar">
+                        <p:commandButton value="Selecionar" action="#{cursosPessoasBean.addCurso(c)}" 
+                                         oncomplete="PF('buscarCurso').hide()" update="form form:cursos" />
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+        </p:dialog>
+
+    </body>
+</html>
