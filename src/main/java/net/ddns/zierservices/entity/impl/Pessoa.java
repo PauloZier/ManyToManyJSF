@@ -1,7 +1,8 @@
-package net.ddns.zierservices.model.impl;
+package net.ddns.zierservices.entity.impl;
 
 import java.util.Date;
 import java.util.List;
+import javax.enterprise.inject.Alternative;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import net.ddns.zierservices.model.definition.BaseModel;
+import net.ddns.zierservices.entity.definition.BaseEntity;
 
 @NamedQueries({
     @NamedQuery(
@@ -24,7 +25,7 @@ import net.ddns.zierservices.model.definition.BaseModel;
 
 @Entity
 @SequenceGenerator(name = "default", sequenceName = "pessoa_seq", allocationSize = 1)
-public class Pessoa extends BaseModel {
+public class Pessoa extends BaseEntity {
 
     @Column(nullable = false, length = 150)
     private String nome;

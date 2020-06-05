@@ -1,4 +1,4 @@
-package net.ddns.zierservices.controller;
+package net.ddns.zierservices.bean;
 
 import java.io.Serializable;
 import net.ddns.zierservices.util.Msg;
@@ -7,11 +7,11 @@ import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import net.ddns.zierservices.factory.RepositoryFactory;
-import net.ddns.zierservices.model.definition.CrudRepository;
-import net.ddns.zierservices.model.impl.Curso;
-import net.ddns.zierservices.model.impl.Pessoa;
+import net.ddns.zierservices.entity.impl.Curso;
+import net.ddns.zierservices.entity.impl.Pessoa;
+import net.ddns.zierservices.repository.Repository;
 
 @Named
 @ViewScoped
@@ -21,7 +21,8 @@ public class CursosPessoasBean implements Serializable {
 
     private Curso curso;
 
-    private CrudRepository<Pessoa> pessoaRepository;
+    @Inject
+    private Repository repository;
 
     @PostConstruct
     public void init() {
@@ -29,8 +30,6 @@ public class CursosPessoasBean implements Serializable {
         pessoa = new Pessoa();
 
         curso = new Curso();
-
-        pessoaRepository = RepositoryFactory.create(Pessoa.class);
     }
 
     public Pessoa getPessoa() {
@@ -55,11 +54,11 @@ public class CursosPessoasBean implements Serializable {
 
         try {
 
-            pessoaRepository.save(pessoa);
+            repository.save(pessoa);
 
             Msg.msg(FacesMessage.SEVERITY_INFO, "Curso removido com sucesso!");
 
-            this.pessoa = pessoaRepository.find(pessoa.getId());
+            this.pessoa = (Pessoa) repository.find(Pessoa.class, pessoa.getId());
 
             curso = new Curso();
 
@@ -94,12 +93,12 @@ public class CursosPessoasBean implements Serializable {
 
             this.pessoa.getCursos().add(curso);
 
-            pessoaRepository.save(this.pessoa);
+            repository.save(this.pessoa);
 
             Msg.msg(FacesMessage.SEVERITY_INFO, "Curso adicionado com sucesso!");
         }
 
-        this.pessoa = pessoaRepository.find(pessoa.getId());
+        this.pessoa = (Pessoa) repository.find(Pessoa.class, pessoa.getId());
 
         return "";
     }

@@ -1,4 +1,4 @@
-package net.ddns.zierservices.controller;
+package net.ddns.zierservices.bean;
 
 import java.io.Serializable;
 import net.ddns.zierservices.util.Msg;
@@ -8,10 +8,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import net.ddns.zierservices.factory.RepositoryFactory;
-import net.ddns.zierservices.model.definition.CrudRepository;
-import net.ddns.zierservices.model.impl.Pessoa;
+import net.ddns.zierservices.entity.impl.Pessoa;
+import net.ddns.zierservices.repository.Repository;
 import net.ddns.zierservices.util.TextUtils;
 
 @Named
@@ -20,7 +20,8 @@ public class PessoaBean implements Serializable {
 
     private Pessoa pessoa;
     
-    private CrudRepository<Pessoa> repository;
+    @Inject
+    private Repository repository;
     
     private List<Pessoa> lista;
     
@@ -30,10 +31,8 @@ public class PessoaBean implements Serializable {
     public void init() {
         
         pessoa = new Pessoa();
-        
-        repository = RepositoryFactory.create(Pessoa.class);
-        
-        this.setLista(repository.findAll());
+
+        this.setLista(repository.findAll(Pessoa.class));
         
     }
 
@@ -90,7 +89,7 @@ public class PessoaBean implements Serializable {
             return "";
         }
 
-        repository.delete(this.pessoa.getId());
+        repository.delete(Pessoa.class, this.pessoa.getId());
 
         Msg.msg(FacesMessage.SEVERITY_INFO, "Excluido com sucesso!");
 

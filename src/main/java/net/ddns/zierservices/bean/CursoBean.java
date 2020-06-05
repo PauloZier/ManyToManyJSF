@@ -1,4 +1,4 @@
-package net.ddns.zierservices.controller;
+package net.ddns.zierservices.bean;
 
 import java.io.Serializable;
 import net.ddns.zierservices.util.Msg;
@@ -6,10 +6,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import net.ddns.zierservices.factory.RepositoryFactory;
-import net.ddns.zierservices.model.definition.CrudRepository;
-import net.ddns.zierservices.model.impl.Curso;
+import net.ddns.zierservices.entity.impl.Curso;
+import net.ddns.zierservices.repository.Repository;
 
 @Named
 @ViewScoped
@@ -17,15 +17,15 @@ public class CursoBean implements Serializable {
 
     private Curso curso;
     
-    private CrudRepository<Curso> repository;
+    @Inject
+    private Repository repository;
     
     private List<Curso> list;
 
     @PostConstruct
     public void init() {
         curso = new Curso();
-        repository = RepositoryFactory.create(Curso.class);
-        list = repository.findAll();
+        list = repository.findAll(Curso.class);
     }
 
     public Curso getCurso() {
@@ -75,7 +75,7 @@ public class CursoBean implements Serializable {
         
         }
 
-        if (repository.delete(this.curso.getId())) {
+        if (repository.delete(Curso.class, this.curso.getId())) {
         
             list.remove(curso);
             

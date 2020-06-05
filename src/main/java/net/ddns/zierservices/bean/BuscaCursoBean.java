@@ -1,13 +1,13 @@
-package net.ddns.zierservices.controller;
+package net.ddns.zierservices.bean;
 
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import net.ddns.zierservices.factory.RepositoryFactory;
-import net.ddns.zierservices.model.definition.CrudRepository;
-import net.ddns.zierservices.model.impl.Curso;
+import net.ddns.zierservices.entity.impl.Curso;
+import net.ddns.zierservices.repository.Repository;
 import net.ddns.zierservices.util.PairImpl;
 
 @Named
@@ -16,16 +16,15 @@ public class BuscaCursoBean implements Serializable {
 
     private String pesquisa;
     
-    private CrudRepository<Curso> repository;
+    @Inject
+    private Repository repository;
     
     private List<Curso> cursos;
 
     @PostConstruct
     public void init() {
         
-        repository = RepositoryFactory.create(Curso.class);
-        
-        cursos = repository.findAll();
+        cursos = repository.findAll(Curso.class);
     }
 
     public String getPesquisa() {
@@ -48,7 +47,7 @@ public class BuscaCursoBean implements Serializable {
         
         if (pesquisa.isEmpty()) {
         
-            cursos = repository.findAll();
+            cursos = repository.findAll(Curso.class);
         
         } else {
             

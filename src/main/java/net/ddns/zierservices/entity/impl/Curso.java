@@ -1,4 +1,4 @@
-package net.ddns.zierservices.model.impl;
+package net.ddns.zierservices.entity.impl;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +9,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
-import net.ddns.zierservices.model.definition.BaseModel;
+import net.ddns.zierservices.entity.definition.BaseEntity;
 
 @NamedQueries({
     @NamedQuery(
@@ -20,7 +20,7 @@ import net.ddns.zierservices.model.definition.BaseModel;
 
 @Entity
 @SequenceGenerator(name = "default", sequenceName = "curso_seq", allocationSize = 1)
-public class Curso extends BaseModel {
+public class Curso extends BaseEntity {
 
     @Column(nullable = false, length = 180)
     private String descricao;

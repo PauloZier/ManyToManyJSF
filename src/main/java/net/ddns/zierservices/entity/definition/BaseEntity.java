@@ -1,4 +1,4 @@
-package net.ddns.zierservices.model.definition;
+package net.ddns.zierservices.entity.definition;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class BaseModel {
+public abstract class BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default")
