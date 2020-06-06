@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 @Singleton
-public class HibernateHelper {
+public class JPAUtil {
 
     private static EntityManagerFactory emf = null;
 

@@ -2,7 +2,6 @@ package net.ddns.zierservices.entity.impl;
 
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.inject.Alternative;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

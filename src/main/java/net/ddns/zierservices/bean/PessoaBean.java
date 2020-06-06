@@ -91,7 +91,7 @@ public class PessoaBean implements Serializable {
 
         repository.delete(Pessoa.class, this.pessoa.getId());
 
-        Msg.msg(FacesMessage.SEVERITY_INFO, "Excluido com sucesso!");
+        Msg.msg(FacesMessage.SEVERITY_INFO, "Excluído com sucesso!");
 
         lista.remove(this.pessoa);
 

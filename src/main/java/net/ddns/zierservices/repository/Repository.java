@@ -17,7 +17,7 @@ public class Repository implements Serializable {
     @Inject
     private EntityManager entityManager;
     
-    public BaseEntity save(BaseEntity t) {
+    public <T extends BaseEntity> T save(T t) {
 
         try {
             
@@ -46,7 +46,7 @@ public class Repository implements Serializable {
 
     }
 
-    public Boolean delete(BaseEntity t) {
+    public <T extends BaseEntity> Boolean delete(T t) {
 
         try {
             
@@ -90,11 +90,13 @@ public class Repository implements Serializable {
 
     }
 
-    public BaseEntity find(Class cls, Long id) {
+    public <T extends BaseEntity> T find(Class<T> cls, Long id) {
         
         try {
 
-            return (BaseEntity) entityManager.find(cls, id);
+            entityManager.clear();
+            
+            return (T) entityManager.find(cls, id);
 
         } catch (Exception ex) {
     
@@ -104,7 +106,7 @@ public class Repository implements Serializable {
 
     }
 
-    public List findAll(Class cls) {
+    public <T extends BaseEntity> List<T> findAll(Class<T> cls) {
 
         try {
             

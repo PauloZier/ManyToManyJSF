@@ -58,7 +58,7 @@ public class CursosPessoasBean implements Serializable {
 
             Msg.msg(FacesMessage.SEVERITY_INFO, "Curso removido com sucesso!");
 
-            this.pessoa = (Pessoa) repository.find(Pessoa.class, pessoa.getId());
+            this.pessoa = repository.find(Pessoa.class, pessoa.getId());
 
             curso = new Curso();
 
